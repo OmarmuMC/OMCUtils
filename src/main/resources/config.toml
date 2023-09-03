@@ -1,0 +1,4 @@
+[global-broadcast]
+# How global broadcast prefix should be displayed
+# Formatted using MiniMessage
+prefix-message = "<bold><red>[GLOBAL BROADCAST]</red></bold> "
