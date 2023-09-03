@@ -30,25 +30,27 @@ import java.nio.file.Path;
 public class OMCUtils {
   public static OMCUtils INSTANCE;
 
-  @Inject
   public static Logger logger;
-  @Inject
   public static ProxyServer proxy;
-  @DataDirectory
   public static Path dataDirectory;
 
   public TomlParseResult config;
 
-  public OMCUtils() {
+  @Inject
+  public OMCUtils(ProxyServer server, Logger logger, @DataDirectory Path dataDirectory) {
     super();
     INSTANCE = this;
+
+    OMCUtils.logger = logger;
+    OMCUtils.proxy = server;
+    OMCUtils.dataDirectory = dataDirectory;
   }
 
   @Subscribe
   public void onProxyInitialization(ProxyInitializeEvent event) {
     // Load config
     try {
-      config = new ConfigManager().loadConfig();
+      config = new ConfigManager().loadConfig(dataDirectory);
     } catch (IOException e) {
       throw new RuntimeException(e);
     }

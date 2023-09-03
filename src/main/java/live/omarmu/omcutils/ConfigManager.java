@@ -12,10 +12,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 public class ConfigManager {
-  @DataDirectory
-  public static Path dataDirectory;
-
-  public TomlParseResult loadConfig() throws IOException {
+  public TomlParseResult loadConfig(Path dataDirectory) throws IOException {
     // Create data directory if it doesn't exist
     if (!dataDirectory.toFile().exists()) dataDirectory.toFile().mkdirs();
 
