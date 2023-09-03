@@ -1,22 +1,23 @@
 package live.omarmu.omcutils;
 
 import com.google.inject.Inject;
-import com.moandjiezana.toml.Toml;
 import com.velocitypowered.api.command.CommandManager;
 import com.velocitypowered.api.command.CommandMeta;
+import com.velocitypowered.api.event.EventManager;
 import com.velocitypowered.api.event.proxy.ProxyInitializeEvent;
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.plugin.Plugin;
 import com.velocitypowered.api.plugin.annotation.DataDirectory;
 import com.velocitypowered.api.proxy.ProxyServer;
-import live.omarmu.omcutils.commands.GlobalBroadcast;
+
+import live.omarmu.omcutils.features.globalbroadcast.GlobalBroadcastCommand;
+import live.omarmu.omcutils.features.staffchat.ChatListener;
+import live.omarmu.omcutils.features.staffchat.StaffChatCommand;
+
 import org.slf4j.Logger;
 import org.tomlj.TomlParseResult;
 
-import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
 import java.nio.file.Path;
 
 @Plugin(
@@ -55,16 +56,22 @@ public class OMCUtils {
       throw new RuntimeException(e);
     }
 
+    // Register event listener
+    EventManager eventManager = proxy.getEventManager();
+    eventManager.register(this, new ChatListener());
+
     // Register all commands
     CommandManager commandManager = proxy.getCommandManager();
 
     // TODO: Abstractize this utilizing OMCUtilsCommand
-    CommandMeta commandMeta = commandManager.metaBuilder("globalbroadcast")
-      .aliases("gcast")
-      .plugin(this)
-      .build();
-
-    commandManager.register(commandMeta, new GlobalBroadcast());
+    commandManager.register(
+      commandManager.metaBuilder("globalbroadcast").aliases("gcast").plugin(this).build(),
+      new GlobalBroadcastCommand()
+    );
+    commandManager.register(
+      commandManager.metaBuilder("staffchat").aliases("sc").plugin(this).build(),
+      StaffChatCommand.createBrigadierCommand(proxy)
+    );
 
     logger.info("OMCUtils has been loaded!");
   }

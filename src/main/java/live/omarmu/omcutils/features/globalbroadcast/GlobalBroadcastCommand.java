@@ -1,14 +1,16 @@
-package live.omarmu.omcutils.commands;
+package live.omarmu.omcutils.features.globalbroadcast;
 
 import com.velocitypowered.api.command.RawCommand;
 import com.velocitypowered.api.proxy.Player;
+
 import live.omarmu.omcutils.OMCUtils;
 import live.omarmu.omcutils.OMCUtilsCommand;
 import live.omarmu.omcutils.utils.Permissions;
+
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 
-public final class GlobalBroadcast implements RawCommand, OMCUtilsCommand {
+public final class GlobalBroadcastCommand implements RawCommand, OMCUtilsCommand {
 
   @Override
   public void execute(final Invocation invocation) {
