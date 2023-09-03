@@ -26,6 +26,7 @@ public class StaffChatActions {
 
     TextComponent chatMessage = formStaffChatMessage(serverName, author.getUsername(), message);
 
+    OMCUtils.logger.info(chatMessage.toString());
     for (Player player : proxy.getAllPlayers()) {
       if (!player.hasPermission(Permissions.STAFF_CHAT_SEE)) continue;
       if (chatMuted.contains(player.getUniqueId())) continue;
@@ -35,10 +36,11 @@ public class StaffChatActions {
   }
 
   private TextComponent formStaffChatMessage(String serverName, String username, String content) {
+    String s = serverName.toUpperCase();
     return Component
       .empty()
-      .append(MiniMessage.miniMessage().deserialize("<bold><#cf275c>【<#ffa1fa>⛊ <#ffa1fa>" + serverName + "<#cf275c>】</bold>"))
+      .append(MiniMessage.miniMessage().deserialize("<bold><#831843>【<#f9a8d4>⛊ " + s + "<#831843>】</bold>"))
       .append(MiniMessage.miniMessage().deserialize("" + username))
-      .append(MiniMessage.miniMessage().deserialize("⏩ <#ef4444>" + content));
+      .append(MiniMessage.miniMessage().deserialize(" ⏩ <#f9a8d4>" + content));
   }
 }

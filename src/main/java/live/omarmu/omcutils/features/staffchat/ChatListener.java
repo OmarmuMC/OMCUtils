@@ -16,17 +16,16 @@ public class ChatListener {
   @Subscribe
   void onPlayerChat(PlayerChatEvent e) {
     Player player = e.getPlayer();
-    String message = e.getResult().getMessage().toString();
+    String message = e.getMessage();
 
     if (!player.hasPermission(Permissions.STAFF_CHAT_USE)) return; // Permission
-    if (message.startsWith("!")) { // Always global chat with `!` prefix
+    if (message.startsWith("!")) {
       e.setResult(PlayerChatEvent.ChatResult.message(message.substring(1)));
       return;
     }
+    if (!chatToggled.contains(player.getUniqueId()) && !message.startsWith(".")) return;
 
-    if (!(chatToggled.contains(player.getUniqueId()) || message.startsWith("."))) return;
-
-    action.broadcastStaffMessage(player, message.substring(1));
+    action.broadcastStaffMessage(player, message.startsWith(".") ? message.substring(1) : message);
     e.setResult(PlayerChatEvent.ChatResult.denied());
   }
 }

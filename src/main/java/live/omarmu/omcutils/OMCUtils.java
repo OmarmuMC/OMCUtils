@@ -2,7 +2,6 @@ package live.omarmu.omcutils;
 
 import com.google.inject.Inject;
 import com.velocitypowered.api.command.CommandManager;
-import com.velocitypowered.api.command.CommandMeta;
 import com.velocitypowered.api.event.EventManager;
 import com.velocitypowered.api.event.proxy.ProxyInitializeEvent;
 import com.velocitypowered.api.event.Subscribe;
@@ -70,7 +69,7 @@ public class OMCUtils {
     );
     commandManager.register(
       commandManager.metaBuilder("staffchat").aliases("sc").plugin(this).build(),
-      StaffChatCommand.createBrigadierCommand(proxy)
+      StaffChatCommand.createBrigadierCommand()
     );
 
     logger.info("OMCUtils has been loaded!");
