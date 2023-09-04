@@ -23,9 +23,9 @@ public class ChatListener {
       e.setResult(PlayerChatEvent.ChatResult.message(message.substring(1)));
       return;
     }
-    if (!chatToggled.contains(player.getUniqueId()) && !message.startsWith(".")) return;
+    if (!chatToggled.contains(player.getUniqueId()) && !message.startsWith("-")) return;
 
-    action.broadcastStaffMessage(player, message.startsWith(".") ? message.substring(1) : message);
+    action.broadcastStaffMessage(player, message.startsWith("-") ? message.substring(1) : message);
     e.setResult(PlayerChatEvent.ChatResult.denied());
   }
 }
