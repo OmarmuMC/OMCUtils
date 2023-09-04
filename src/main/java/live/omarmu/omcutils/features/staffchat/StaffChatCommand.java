@@ -1,13 +1,14 @@
 package live.omarmu.omcutils.features.staffchat;
 
 import com.mojang.brigadier.Command;
+import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
+import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import com.velocitypowered.api.command.BrigadierCommand;
 import com.velocitypowered.api.command.CommandSource;
 import com.velocitypowered.api.proxy.Player;
 
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 
 import java.util.Set;
@@ -26,6 +27,7 @@ public class StaffChatCommand implements OMCUtilsCommand {
   public static BrigadierCommand createBrigadierCommand() {
     Set<UUID> chatToggled = StaffChatState.getInstance().ChatToggled;
     Set<UUID> chatMuted = StaffChatState.getInstance().ChatMuted;
+    StaffChatActions actions = new StaffChatActions();
 
     var staffChatNode = LiteralArgumentBuilder
       .<CommandSource>literal("staffchat")
@@ -89,6 +91,19 @@ public class StaffChatCommand implements OMCUtilsCommand {
               player.sendMessage(mutedMessage);
             }
 
+            return Command.SINGLE_SUCCESS;
+          })
+      )
+      .then(
+        RequiredArgumentBuilder
+          .<CommandSource, String>argument("message", StringArgumentType.greedyString())
+          .requires(source -> source instanceof Player)
+          .requires(source -> source.hasPermission(Permissions.STAFF_CHAT_USE))
+          .executes(context -> {
+            Player player = (Player) context.getSource();
+            String message = context.getArgument("message", String.class);
+
+            actions.broadcastStaffMessage(player, message);
             return Command.SINGLE_SUCCESS;
           })
       )
