@@ -36,11 +36,26 @@ public class StaffChatActions {
   }
 
   private TextComponent formStaffChatMessage(String serverName, String username, String content) {
-    String s = serverName.toUpperCase();
+    String s = convertServerName(serverName);
+
     return Component
       .empty()
       .append(MiniMessage.miniMessage().deserialize("<bold><#831843>【<#f9a8d4>⛊ " + s + "<#831843>】</bold>"))
       .append(MiniMessage.miniMessage().deserialize("" + username))
       .append(MiniMessage.miniMessage().deserialize(" ⏩ <#f9a8d4>" + content));
+  }
+
+  private String convertServerName(String name) {
+    // TODO: Consider hashmapping later maybe
+    switch (name.toUpperCase()) {
+      case "LOBBY":
+        return "LOBBY";
+      case "SURVIVAL":
+        return "SURV";
+      case "MINIGAME":
+        return "M.GAME";
+      default:
+        return name;
+    }
   }
 }
